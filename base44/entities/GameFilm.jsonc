@@ -1,0 +1,37 @@
+{
+  "name": "GameFilm",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "youtube",
+        "upload"
+      ],
+      "default": "upload"
+    },
+    "video_url": {
+      "type": "string",
+      "description": "Uploaded file URL or YouTube URL"
+    },
+    "youtube_id": {
+      "type": "string",
+      "description": "Parsed YouTube video ID when source is youtube"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Coach context: opponent, date, what to look for"
+    },
+    "analysis": {
+      "type": "string",
+      "description": "AI coaching breakdown (markdown)"
+    }
+  },
+  "required": [
+    "title",
+    "video_url"
+  ]
+}

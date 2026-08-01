@@ -1,12 +1,13 @@
 import React from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import { LayoutGrid, Swords, Crosshair, Users, Diamond } from "lucide-react";
+import { LayoutGrid, Swords, Crosshair, Users, Diamond, Clapperboard } from "lucide-react";
 
 const nav = [
   { to: "/", label: "Command Center", icon: LayoutGrid },
   { to: "/war-room", label: "War Room", icon: Swords },
   { to: "/pitch-predictor", label: "Pitch Predictor", icon: Crosshair },
   { to: "/players", label: "Roster Intel", icon: Users },
+  { to: "/game-film", label: "Game Film", icon: Clapperboard },
 ];
 
 export default function AppLayout() {

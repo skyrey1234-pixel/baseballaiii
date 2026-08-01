@@ -18,6 +18,7 @@ import Dashboard from '@/pages/Dashboard';
 import WarRoom from '@/pages/WarRoom';
 import PitchPredictor from '@/pages/PitchPredictor';
 import Players from '@/pages/Players';
+import GameFilm from '@/pages/GameFilm';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -55,6 +56,7 @@ const AuthenticatedApp = () => {
           <Route path="/war-room" element={<WarRoom />} />
           <Route path="/pitch-predictor" element={<PitchPredictor />} />
           <Route path="/players" element={<Players />} />
+          <Route path="/game-film" element={<GameFilm />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />
