@@ -1,0 +1,98 @@
+{
+  "name": "Player",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "number": {
+      "type": "number"
+    },
+    "position": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "pitcher",
+        "catcher",
+        "batter",
+        "fielder"
+      ],
+      "default": "fielder"
+    },
+    "bats": {
+      "type": "string",
+      "enum": [
+        "L",
+        "R",
+        "S"
+      ],
+      "default": "R"
+    },
+    "throws": {
+      "type": "string",
+      "enum": [
+        "L",
+        "R"
+      ],
+      "default": "R"
+    },
+    "readiness": {
+      "type": "number",
+      "description": "0-100 live readiness score"
+    },
+    "muscular_fatigue": {
+      "type": "string",
+      "enum": [
+        "low",
+        "moderate",
+        "high"
+      ],
+      "default": "low"
+    },
+    "mechanical_stability": {
+      "type": "string",
+      "enum": [
+        "stable",
+        "declining",
+        "critical"
+      ],
+      "default": "stable"
+    },
+    "command_risk": {
+      "type": "string",
+      "enum": [
+        "low",
+        "elevated",
+        "high"
+      ],
+      "default": "low"
+    },
+    "injury_warning": {
+      "type": "string",
+      "enum": [
+        "low",
+        "low_moderate",
+        "moderate",
+        "high"
+      ],
+      "default": "low"
+    },
+    "drift_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Detected mechanical drift signals"
+    },
+    "key_stat": {
+      "type": "string",
+      "description": "Headline stat, e.g. 'ERA 2.87' or 'AVG .312'"
+    }
+  },
+  "required": [
+    "name",
+    "role"
+  ]
+}

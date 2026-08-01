@@ -1,0 +1,64 @@
+{
+  "name": "Decision",
+  "type": "object",
+  "properties": {
+    "question": {
+      "type": "string"
+    },
+    "recommendation": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "moderate",
+        "high"
+      ],
+      "default": "moderate"
+    },
+    "reasoning": {
+      "type": "string"
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string"
+          },
+          "win_probability": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "agent": {
+            "type": "string"
+          },
+          "opinion": {
+            "type": "string"
+          },
+          "stance": {
+            "type": "string",
+            "enum": [
+              "for",
+              "against",
+              "neutral"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "question",
+    "recommendation"
+  ]
+}

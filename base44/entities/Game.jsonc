@@ -1,0 +1,73 @@
+{
+  "name": "Game",
+  "type": "object",
+  "properties": {
+    "opponent": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "upcoming",
+        "live",
+        "final"
+      ],
+      "default": "live"
+    },
+    "inning": {
+      "type": "number"
+    },
+    "half": {
+      "type": "string",
+      "enum": [
+        "top",
+        "bottom"
+      ],
+      "default": "top"
+    },
+    "our_score": {
+      "type": "number",
+      "default": 0
+    },
+    "their_score": {
+      "type": "number",
+      "default": 0
+    },
+    "outs": {
+      "type": "number",
+      "default": 0
+    },
+    "balls": {
+      "type": "number",
+      "default": 0
+    },
+    "strikes": {
+      "type": "number",
+      "default": 0
+    },
+    "runners": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "1B",
+          "2B",
+          "3B"
+        ]
+      }
+    },
+    "current_pitcher": {
+      "type": "string"
+    },
+    "current_batter": {
+      "type": "string",
+      "description": "Opposing batter at the plate"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "opponent"
+  ]
+}
