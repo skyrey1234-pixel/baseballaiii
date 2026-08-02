@@ -1,0 +1,74 @@
+{
+  "name": "VerifiedClaim",
+  "type": "object",
+  "properties": {
+    "player_name": {
+      "type": "string"
+    },
+    "metric": {
+      "type": "string",
+      "description": "e.g. Fastball velocity, Exit velocity, 60-yard dash, Pop time"
+    },
+    "peak_value": {
+      "type": "string",
+      "description": "The headline number being claimed"
+    },
+    "average_value": {
+      "type": "string",
+      "description": "Session average for the same metric"
+    },
+    "sample_size": {
+      "type": "number",
+      "description": "How many measurements the session contained"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "location": {
+      "type": "string"
+    },
+    "device": {
+      "type": "string",
+      "enum": [
+        "trackman",
+        "rapsodo",
+        "hawkeye",
+        "stalker_radar",
+        "pocket_radar",
+        "blast_motion",
+        "hand_timed",
+        "estimated"
+      ],
+      "default": "pocket_radar"
+    },
+    "setting": {
+      "type": "string",
+      "enum": [
+        "game",
+        "showcase",
+        "bullpen",
+        "practice",
+        "cage"
+      ],
+      "default": "practice"
+    },
+    "video_url": {
+      "type": "string",
+      "description": "Footage of the measured rep"
+    },
+    "witness": {
+      "type": "string",
+      "description": "Coach or evaluator who observed the session"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "player_name",
+    "metric",
+    "peak_value",
+    "date"
+  ]
+}

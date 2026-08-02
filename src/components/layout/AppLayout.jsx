@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import { LayoutGrid, Swords, Crosshair, Users, Diamond, Clapperboard, FlaskConical, Activity, Dna, Boxes, GitBranch, ShieldCheck } from "lucide-react";
+import { LayoutGrid, Swords, Crosshair, Users, Diamond, Clapperboard, FlaskConical, Activity, Dna, Boxes, GitBranch, ShieldCheck, Flame, BadgeCheck, Film } from "lucide-react";
 
 // Each destination carries its own accent so the sidebar reads as a colorful map, not a list.
 const nav = [
@@ -15,6 +15,9 @@ const nav = [
   { to: "/pitch-dna", label: "Pitch DNA", icon: Dna, color: "text-teal-300", active: "bg-teal-400/15 text-teal-200 shadow-[inset_0_0_0_1px_rgba(94,234,212,0.35)]" },
   { to: "/swing-studio", label: "Swing Studio", icon: Boxes, color: "text-orange-300", active: "bg-orange-400/15 text-orange-200 shadow-[inset_0_0_0_1px_rgba(253,186,116,0.35)]" },
   { to: "/game-film", label: "Game Film", icon: Clapperboard, color: "text-indigo-300", active: "bg-indigo-400/15 text-indigo-200 shadow-[inset_0_0_0_1px_rgba(165,180,252,0.35)]" },
+  { to: "/pressure-lab", label: "Pressure Lab", icon: Flame, color: "text-orange-300", active: "bg-orange-400/15 text-orange-200 shadow-[inset_0_0_0_1px_rgba(253,186,116,0.35)]" },
+  { to: "/recruiting", label: "Recruiting Truth", icon: BadgeCheck, color: "text-emerald-300", active: "bg-emerald-400/15 text-emerald-200 shadow-[inset_0_0_0_1px_rgba(52,211,153,0.35)]" },
+  { to: "/documentary", label: "Season Film", icon: Film, color: "text-pink-300", active: "bg-pink-400/15 text-pink-200 shadow-[inset_0_0_0_1px_rgba(249,168,212,0.35)]" },
 ];
 
 export default function AppLayout() {

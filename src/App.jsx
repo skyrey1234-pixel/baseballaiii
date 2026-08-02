@@ -25,6 +25,9 @@ import PitchDNA from '@/pages/PitchDNA';
 import SwingStudio from '@/pages/SwingStudio';
 import MistakeDNA from '@/pages/MistakeDNA';
 import Passport from '@/pages/Passport';
+import PressureLab from '@/pages/PressureLab';
+import Recruiting from '@/pages/Recruiting';
+import Documentary from '@/pages/Documentary';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -68,6 +71,9 @@ const AuthenticatedApp = () => {
           <Route path="/swing-studio" element={<SwingStudio />} />
           <Route path="/mistake-dna" element={<MistakeDNA />} />
           <Route path="/passport" element={<Passport />} />
+          <Route path="/pressure-lab" element={<PressureLab />} />
+          <Route path="/recruiting" element={<Recruiting />} />
+          <Route path="/documentary" element={<Documentary />} />
           <Route path="/game-film" element={<GameFilm />} />
         </Route>
       </Route>

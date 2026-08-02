@@ -1,0 +1,83 @@
+{
+  "name": "PressureScenario",
+  "type": "object",
+  "properties": {
+    "player_name": {
+      "type": "string"
+    },
+    "focus": {
+      "type": "string",
+      "description": "Skill or weakness this scenario is built to stress"
+    },
+    "title": {
+      "type": "string"
+    },
+    "situation": {
+      "type": "string",
+      "description": "Inning, score, count, runners, outs"
+    },
+    "stakes": {
+      "type": "string",
+      "description": "What is on the line, including crowd and noise setup"
+    },
+    "objective": {
+      "type": "string",
+      "description": "What success looks like for the athlete"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Rules that raise the difficulty"
+    },
+    "consequence": {
+      "type": "string",
+      "description": "What happens on failure"
+    },
+    "coach_setup": {
+      "type": "string",
+      "description": "How to run the rep on the field"
+    },
+    "result_notes": {
+      "type": "string",
+      "description": "What actually happened when the athlete ran it"
+    },
+    "grades": {
+      "type": "object",
+      "properties": {
+        "decision_quality": {
+          "type": "number"
+        },
+        "execution": {
+          "type": "number"
+        },
+        "emotional_control": {
+          "type": "number"
+        },
+        "situational_awareness": {
+          "type": "number"
+        }
+      }
+    },
+    "grade_notes": {
+      "type": "string"
+    },
+    "next_step": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "generated",
+        "graded"
+      ],
+      "default": "generated"
+    }
+  },
+  "required": [
+    "player_name",
+    "title",
+    "situation"
+  ]
+}
