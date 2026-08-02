@@ -1,0 +1,52 @@
+{
+  "name": "PitchOuting",
+  "type": "object",
+  "properties": {
+    "player_name": {
+      "type": "string"
+    },
+    "age": {
+      "type": "number",
+      "description": "Player age at the time of the outing"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "organization": {
+      "type": "string",
+      "description": "Which team or program this outing was for"
+    },
+    "outing_type": {
+      "type": "string",
+      "enum": [
+        "game",
+        "bullpen",
+        "showcase",
+        "warmup",
+        "long_toss"
+      ],
+      "default": "game"
+    },
+    "pitches": {
+      "type": "number"
+    },
+    "discomfort": {
+      "type": "string",
+      "enum": [
+        "none",
+        "mild",
+        "notable"
+      ],
+      "default": "none"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "player_name",
+    "date",
+    "pitches"
+  ]
+}

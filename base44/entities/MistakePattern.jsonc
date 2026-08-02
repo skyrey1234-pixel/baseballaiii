@@ -1,0 +1,77 @@
+{
+  "name": "MistakePattern",
+  "type": "object",
+  "properties": {
+    "player_name": {
+      "type": "string"
+    },
+    "player_role": {
+      "type": "string",
+      "enum": [
+        "hitter",
+        "pitcher",
+        "fielder"
+      ],
+      "default": "hitter"
+    },
+    "trigger": {
+      "type": "string",
+      "description": "The situation that starts the failure chain"
+    },
+    "pattern_name": {
+      "type": "string",
+      "description": "Short name for this repeating failure"
+    },
+    "frequency": {
+      "type": "string",
+      "description": "How often this shows up, in plain language"
+    },
+    "chain": {
+      "type": "array",
+      "description": "Ordered links in the causal chain, from trigger to outcome",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "is_root_cause": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "root_cause": {
+      "type": "string",
+      "description": "The one link that, if fixed, breaks the chain"
+    },
+    "why_it_repeats": {
+      "type": "string"
+    },
+    "intervention": {
+      "type": "string",
+      "description": "The drill or adjustment that breaks the chain"
+    },
+    "verification": {
+      "type": "string",
+      "description": "How to confirm the chain is actually broken"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "moderate",
+        "experimental"
+      ],
+      "default": "moderate"
+    }
+  },
+  "required": [
+    "player_name",
+    "trigger",
+    "pattern_name"
+  ]
+}
