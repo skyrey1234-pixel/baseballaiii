@@ -1,0 +1,112 @@
+{
+  "name": "SwingAnalysis",
+  "type": "object",
+  "properties": {
+    "player_name": {
+      "type": "string"
+    },
+    "situation": {
+      "type": "string",
+      "description": "Pitch and count the swing was taken against"
+    },
+    "headline": {
+      "type": "string",
+      "description": "One-line read on the swing"
+    },
+    "overall_grade": {
+      "type": "number",
+      "description": "0-100 swing execution grade"
+    },
+    "fix_priority": {
+      "type": "string",
+      "description": "The single most important thing to change"
+    },
+    "swing_params": {
+      "type": "object",
+      "description": "Geometry used to animate the 3D swing",
+      "properties": {
+        "attack_angle_deg": {
+          "type": "number",
+          "description": "Bat path angle at contact, negative = downward"
+        },
+        "bat_speed_mph": {
+          "type": "number"
+        },
+        "swing_length_ft": {
+          "type": "number"
+        },
+        "contact_depth_ft": {
+          "type": "number",
+          "description": "Feet in front of home plate; negative = deep in the zone"
+        },
+        "contact_height_ft": {
+          "type": "number"
+        },
+        "contact_side_ft": {
+          "type": "number",
+          "description": "Inside/outside offset, negative = inside"
+        },
+        "pitch_velocity_mph": {
+          "type": "number"
+        },
+        "launch_angle_deg": {
+          "type": "number"
+        },
+        "launch_direction_deg": {
+          "type": "number",
+          "description": "Negative = pull side, positive = opposite field"
+        },
+        "exit_velocity_mph": {
+          "type": "number"
+        }
+      }
+    },
+    "phases": {
+      "type": "array",
+      "description": "Ordered swing phases with coaching verdicts",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "timing_pct": {
+            "type": "number",
+            "description": "0-100 position of this phase in the swing"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "good",
+              "flaw",
+              "neutral"
+            ]
+          },
+          "what_happened": {
+            "type": "string"
+          },
+          "cue": {
+            "type": "string",
+            "description": "What the hitter should feel or do instead"
+          }
+        }
+      }
+    },
+    "drill": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "moderate",
+        "experimental"
+      ],
+      "default": "moderate"
+    }
+  },
+  "required": [
+    "player_name",
+    "headline"
+  ]
+}

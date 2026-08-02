@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import { LayoutGrid, Swords, Crosshair, Users, Diamond, Clapperboard, FlaskConical, Activity, Dna } from "lucide-react";
+import { LayoutGrid, Swords, Crosshair, Users, Diamond, Clapperboard, FlaskConical, Activity, Dna, Boxes } from "lucide-react";
 
 const nav = [
   { to: "/", label: "Command Center", icon: LayoutGrid },
@@ -10,6 +10,7 @@ const nav = [
   { to: "/pitch-lab", label: "Pitch Design Lab", icon: FlaskConical },
   { to: "/rep-lab", label: "Rep Lab", icon: Activity },
   { to: "/pitch-dna", label: "Pitch DNA", icon: Dna },
+  { to: "/swing-studio", label: "Swing Studio", icon: Boxes },
   { to: "/game-film", label: "Game Film", icon: Clapperboard },
 ];
 
