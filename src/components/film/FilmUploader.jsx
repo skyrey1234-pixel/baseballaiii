@@ -28,18 +28,22 @@ export default function FilmUploader({ onAdded }) {
     setError("");
     if (!title.trim()) { setError("Give this film a title."); return; }
     setSaving(true);
-    if (tab === "youtube") {
-      const id = parseYouTubeId(link.trim());
-      if (!id) { setError("That doesn't look like a valid YouTube link."); setSaving(false); return; }
-      await base44.entities.GameFilm.create({ title: title.trim(), source: "youtube", video_url: link.trim(), youtube_id: id, notes });
-    } else {
-      if (!file) { setError("Choose a video file to upload."); setSaving(false); return; }
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      await base44.entities.GameFilm.create({ title: title.trim(), source: "upload", video_url: file_url, notes });
+    try {
+      if (tab === "youtube") {
+        const id = parseYouTubeId(link.trim());
+        if (!id) { setError("That doesn't look like a valid YouTube link."); setSaving(false); return; }
+        await base44.entities.GameFilm.create({ title: title.trim(), source: "youtube", video_url: link.trim(), youtube_id: id, notes });
+      } else {
+        if (!file) { setError("Choose a video file to upload."); setSaving(false); return; }
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        await base44.entities.GameFilm.create({ title: title.trim(), source: "upload", video_url: file_url, notes });
+      }
+      reset();
+      onAdded();
+    } catch (e) {
+      setError("The upload failed — the connection dropped or the video is too large. Try a smaller file or a YouTube link.");
     }
     setSaving(false);
-    reset();
-    onAdded();
   };
 
   const tabBtn = (key, Icon, label) => (

@@ -7,9 +7,12 @@ import { Loader2, Sparkles, Trash2, ChevronDown, ChevronUp } from "lucide-react"
 export default function FilmCard({ film, onChanged }) {
   const [analyzing, setAnalyzing] = useState(false);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
 
   const analyze = async () => {
     setAnalyzing(true);
+    setError("");
+    try {
     const analysis = await base44.integrations.Core.InvokeLLM({
       prompt: `You are DiamondMind AI, a baseball game-film analyst. A coach uploaded game film titled "${film.title}".${film.notes ? ` Coach's context: ${film.notes}.` : ""}${film.source === "youtube" ? ` The film is this YouTube video: ${film.video_url} — use the internet to find any available information about this video and its content.` : ""}
 
@@ -24,9 +27,12 @@ Base it on the title, context, and any information you can find. Where specifics
       add_context_from_internet: film.source === "youtube",
     });
     await base44.entities.GameFilm.update(film.id, { analysis });
-    setAnalyzing(false);
     setOpen(true);
     onChanged();
+    } catch (e) {
+      setError("The connection dropped during analysis. Please try again.");
+    }
+    setAnalyzing(false);
   };
 
   const remove = async () => {
@@ -69,6 +75,7 @@ Base it on the title, context, and any information you can find. Where specifics
             </button>
           )}
         </div>
+        {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
         {open && film.analysis && (
           <div className="mt-4 pt-4 border-t border-white/5 prose prose-invert prose-sm max-w-none prose-headings:text-emerald-300 prose-headings:text-sm prose-headings:uppercase prose-headings:tracking-widest prose-p:text-slate-400 prose-li:text-slate-400">
             <ReactMarkdown>{film.analysis}</ReactMarkdown>

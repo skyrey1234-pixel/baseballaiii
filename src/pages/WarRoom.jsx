@@ -25,12 +25,15 @@ export default function WarRoom() {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState("");
   const game = games?.[0];
 
   const debate = async (q) => {
     setLoading(true);
     setResult(null);
+    setError("");
     setQuestion(q);
+    try {
     const roster = (players || []).map((p) =>
       `${p.name} (#${p.number}, ${p.position}, ${p.key_stat}) — readiness ${p.readiness}/100, fatigue ${p.muscular_fatigue}, mechanics ${p.mechanical_stability}, command risk ${p.command_risk}${p.drift_notes?.length ? `, drift: ${p.drift_notes.join("; ")}` : ""}`
     ).join("\n");
@@ -59,7 +62,6 @@ Each of the 8 agents gives one sharp, quantitative opinion (1-2 sentences, refer
       },
     });
     setResult(res);
-    setLoading(false);
     await base44.entities.Decision.create({
       question: q,
       recommendation: res.recommendation,
@@ -69,6 +71,10 @@ Each of the 8 agents gives one sharp, quantitative opinion (1-2 sentences, refer
       agents: res.agents,
     });
     qc.invalidateQueries({ queryKey: ["decisions"] });
+    } catch (e) {
+      setError("The connection dropped while the coaching staff was debating. Please try again.");
+    }
+    setLoading(false);
   };
 
   return (
@@ -97,6 +103,10 @@ Each of the 8 agents gives one sharp, quantitative opinion (1-2 sentences, refer
           </Button>
         </div>
       </div>
+
+      {error && (
+        <div className="rounded-2xl border border-red-400/20 bg-red-400/[0.05] p-5 text-sm text-red-300">{error}</div>
+      )}
 
       {loading && (
         <div className="rounded-2xl border border-white/5 bg-[#0C1220] p-10 text-center">

@@ -18,11 +18,14 @@ export default function PitchPredictor() {
   const [form, setForm] = useState({ balls: "1", strikes: "2", outs: "1", inning: "6", batter: "", prev: "Four-seam fastball", runners: "Runner on first" });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const set = (k) => (v) => setForm((f) => ({ ...f, [k]: v }));
 
   const predict = async () => {
     setLoading(true);
     setResult(null);
+    setError("");
+    try {
     const res = await base44.integrations.Core.InvokeLLM({
       prompt: `You are DiamondMind AI, an elite baseball pitch-prediction engine. Predict the OPPONENT pitcher's most likely next pitch and advise our batter/coaching staff — or, if our pitcher is throwing, recommend pitch selection. Be specific and quantitative, in the style of professional analytics.
 
@@ -48,6 +51,9 @@ Produce a realistic prediction with probabilities (integers 0-100), the most dan
       },
     });
     setResult(res);
+    } catch (e) {
+      setError("The connection dropped while analyzing. Please try again.");
+    }
     setLoading(false);
   };
 
@@ -106,6 +112,9 @@ Produce a realistic prediction with probabilities (integers 0-100), the most dan
           </Button>
         </div>
         <div className="lg:col-span-3">
+          {error && (
+            <div className="rounded-2xl border border-red-400/20 bg-red-400/[0.05] p-5 text-sm text-red-300 mb-5">{error}</div>
+          )}
           {loading && (
             <div className="rounded-2xl border border-white/5 bg-[#0C1220] p-10 text-center">
               <Loader2 className="w-6 h-6 animate-spin text-emerald-400 mx-auto mb-3" />
