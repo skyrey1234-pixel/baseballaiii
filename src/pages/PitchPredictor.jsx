@@ -6,12 +6,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Loader2, Crosshair } from "lucide-react";
 import PredictionResult from "@/components/pitch/PredictionResult";
+import { buildFilmIntel } from "@/lib/filmIntel";
+import FilmIntelBanner from "@/components/film/FilmIntelBanner";
 
 const PITCHES = ["None (first pitch)", "Four-seam fastball", "Two-seam fastball", "Slider", "Curveball", "Changeup", "Cutter", "Sinker", "Splitter"];
 
 export default function PitchPredictor() {
   const { data: games } = useQuery({ queryKey: ["liveGame"], queryFn: () => base44.entities.Game.filter({ status: "live" }, "-created_date", 1) });
   const { data: players } = useQuery({ queryKey: ["players"], queryFn: () => base44.entities.Player.list("readiness", 100) });
+  const { data: films } = useQuery({ queryKey: ["films"], queryFn: () => base44.entities.GameFilm.list("-created_date", 20) });
   const game = games?.[0];
   const pitcher = (players || []).find((p) => p.role === "pitcher");
 
@@ -31,6 +34,7 @@ export default function PitchPredictor() {
 
 Game context: ${game ? `vs ${game.opponent}, ${game.half} of inning ${game.inning}, score ${game.our_score}-${game.their_score}.` : "Simulated game situation."}
 Our pitcher on record: ${pitcher ? `${pitcher.name} — readiness ${pitcher.readiness}/100, mechanics ${pitcher.mechanical_stability}, drift signals: ${(pitcher.drift_notes || []).join("; ") || "none"}.` : "unknown"}
+${buildFilmIntel(films)}
 Situation: count ${form.balls}-${form.strikes}, ${form.outs} outs, inning ${form.inning}, ${form.runners}. Batter at the plate: ${form.batter || "unknown batter"}. Previous pitch: ${form.prev}.
 
 Produce a realistic prediction with probabilities (integers 0-100), the most dangerous pitch-selection mistake in this situation, and a recommended alternative with a concrete mechanical/behavioral reason (e.g. swing-path or release-point changes).`,
@@ -65,6 +69,8 @@ Produce a realistic prediction with probabilities (integers 0-100), the most dan
         <p className="text-[11px] tracking-[0.3em] uppercase text-emerald-400 mb-2">Pitch Prediction Engine</p>
         <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">What's coming next?</h1>
       </header>
+      <div className="mb-6"><FilmIntelBanner films={films} /></div>
+
       <div className="grid lg:grid-cols-5 gap-8">
         <div className="lg:col-span-2 rounded-2xl border border-white/5 bg-[#0A0F18] p-6 space-y-4 h-fit">
           <div className="grid grid-cols-3 gap-3">

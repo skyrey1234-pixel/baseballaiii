@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Swords } from "lucide-react";
 import AgentOpinion from "@/components/warroom/AgentOpinion";
 import WarRoomVerdict from "@/components/warroom/WarRoomVerdict";
+import { buildFilmIntel } from "@/lib/filmIntel";
+import FilmIntelBanner from "@/components/film/FilmIntelBanner";
 
 const PRESETS = [
   "Should we leave our starter in for one more inning?",
@@ -21,6 +23,7 @@ export default function WarRoom() {
   const { data: games } = useQuery({ queryKey: ["liveGame"], queryFn: () => base44.entities.Game.filter({ status: "live" }, "-created_date", 1) });
   const { data: players } = useQuery({ queryKey: ["players"], queryFn: () => base44.entities.Player.list("readiness", 100) });
   const { data: decisions } = useQuery({ queryKey: ["decisions"], queryFn: () => base44.entities.Decision.list("-created_date", 5) });
+  const { data: films } = useQuery({ queryKey: ["films"], queryFn: () => base44.entities.GameFilm.list("-created_date", 20) });
 
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,6 +40,7 @@ export default function WarRoom() {
     const roster = (players || []).map((p) =>
       `${p.name} (#${p.number}, ${p.position}, ${p.key_stat}) — readiness ${p.readiness}/100, fatigue ${p.muscular_fatigue}, mechanics ${p.mechanical_stability}, command risk ${p.command_risk}${p.drift_notes?.length ? `, drift: ${p.drift_notes.join("; ")}` : ""}`
     ).join("\n");
+    const filmIntel = buildFilmIntel(films);
     const res = await base44.integrations.Core.InvokeLLM({
       prompt: `You are the DiamondMind AI War Room — eight specialized baseball coaching agents who debate an in-game decision, after which a head AI issues one final recommendation.
 
@@ -47,6 +51,7 @@ Game context: ${game ? `vs ${game.opponent}, ${game.half} of inning ${game.innin
 Roster intelligence:
 ${roster}
 
+${filmIntel}
 Coach's question: "${q}"
 
 Each of the 8 agents gives one sharp, quantitative opinion (1-2 sentences, referencing concrete signals like mechanical drift, matchup splits, win probability, workload) and a stance: "for", "against", or "neutral" toward the eventual recommendation. Then produce the final recommendation, a confidence level, 2-4 decision options each with an estimated win probability (integers, realistic 40-70 range), and a clear plain-language reasoning paragraph explaining WHY.`,
@@ -83,6 +88,8 @@ Each of the 8 agents gives one sharp, quantitative opinion (1-2 sentences, refer
         <p className="text-[11px] tracking-[0.3em] uppercase text-emerald-400 mb-2">War Room</p>
         <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Eight AI coaches. One decision.</h1>
       </header>
+
+      <FilmIntelBanner films={films} />
 
       <div className="rounded-2xl border border-white/5 bg-[#0A0F18] p-6 space-y-4">
         <div className="flex flex-wrap gap-2">
