@@ -1,0 +1,117 @@
+{
+  "name": "PitchRep",
+  "type": "object",
+  "properties": {
+    "player_name": {
+      "type": "string"
+    },
+    "rep_type": {
+      "type": "string",
+      "enum": [
+        "pitch",
+        "swing"
+      ],
+      "default": "pitch"
+    },
+    "pitch_type": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string",
+      "description": "What the athlete intended before the rep"
+    },
+    "actual_result": {
+      "type": "string",
+      "description": "What actually happened"
+    },
+    "data_source": {
+      "type": "string",
+      "enum": [
+        "radar_measured",
+        "camera_measured",
+        "sensor_imported",
+        "ai_estimated",
+        "coach_entered",
+        "player_reported"
+      ],
+      "default": "coach_entered"
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Raw measurements entered or imported for this rep",
+      "properties": {
+        "velocity": {
+          "type": "string"
+        },
+        "spin_rate": {
+          "type": "string"
+        },
+        "spin_axis": {
+          "type": "string"
+        },
+        "extension": {
+          "type": "string"
+        },
+        "release_height": {
+          "type": "string"
+        },
+        "vertical_movement": {
+          "type": "string"
+        },
+        "horizontal_movement": {
+          "type": "string"
+        },
+        "vertical_approach_angle": {
+          "type": "string"
+        },
+        "exit_velocity": {
+          "type": "string"
+        },
+        "launch_angle": {
+          "type": "string"
+        },
+        "launch_direction": {
+          "type": "string"
+        }
+      }
+    },
+    "plain_explanation": {
+      "type": "string",
+      "description": "AI explanation in plain baseball language"
+    },
+    "simple_explanation": {
+      "type": "string",
+      "description": "Explain-it-like-I'm-14 version"
+    },
+    "likely_cause": {
+      "type": "string"
+    },
+    "execution_grade": {
+      "type": "number",
+      "description": "0-100 process grade, independent of outcome luck"
+    },
+    "grade_reason": {
+      "type": "string"
+    },
+    "prescribed_drill": {
+      "type": "string"
+    },
+    "drill_success_check": {
+      "type": "string",
+      "description": "How the next session tests whether the correction worked"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "moderate",
+        "experimental"
+      ],
+      "default": "moderate"
+    }
+  },
+  "required": [
+    "player_name",
+    "intent"
+  ]
+}

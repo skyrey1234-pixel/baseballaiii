@@ -20,6 +20,7 @@ import PitchPredictor from '@/pages/PitchPredictor';
 import Players from '@/pages/Players';
 import GameFilm from '@/pages/GameFilm';
 import PitchLab from '@/pages/PitchLab';
+import RepLab from '@/pages/RepLab';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -58,6 +59,7 @@ const AuthenticatedApp = () => {
           <Route path="/pitch-predictor" element={<PitchPredictor />} />
           <Route path="/players" element={<Players />} />
           <Route path="/pitch-lab" element={<PitchLab />} />
+          <Route path="/rep-lab" element={<RepLab />} />
           <Route path="/game-film" element={<GameFilm />} />
         </Route>
       </Route>
