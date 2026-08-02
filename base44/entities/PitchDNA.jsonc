@@ -1,0 +1,107 @@
+{
+  "name": "PitchDNA",
+  "type": "object",
+  "properties": {
+    "pitcher_name": {
+      "type": "string"
+    },
+    "rep_count": {
+      "type": "number",
+      "description": "How many logged reps this profile was built from"
+    },
+    "pitches": {
+      "type": "array",
+      "description": "One DNA profile per pitch in the arsenal",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pitch_type": {
+            "type": "string"
+          },
+          "identity": {
+            "type": "string",
+            "description": "One-line description of what this pitch is"
+          },
+          "shape_consistency": {
+            "type": "number",
+            "description": "0-100"
+          },
+          "fastball_tunnel_match": {
+            "type": "number",
+            "description": "0-100"
+          },
+          "chase_potential": {
+            "type": "string",
+            "enum": [
+              "low",
+              "moderate",
+              "high"
+            ]
+          },
+          "strike_reliability": {
+            "type": "string",
+            "enum": [
+              "low",
+              "moderate",
+              "high"
+            ]
+          },
+          "mistake_danger": {
+            "type": "string",
+            "description": "Where and when this pitch gets punished"
+          },
+          "trend": {
+            "type": "string",
+            "description": "How this pitch's DNA is changing over time"
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "moderate",
+              "experimental"
+            ]
+          }
+        }
+      }
+    },
+    "tunnel_pairs": {
+      "type": "array",
+      "description": "How pitches relate to each other out of the hand",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pair": {
+            "type": "string"
+          },
+          "tunnel_quality": {
+            "type": "number",
+            "description": "0-100"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "redundancies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "arsenal_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "summary": {
+      "type": "string",
+      "description": "Plain-language read on how the whole arsenal works together"
+    }
+  },
+  "required": [
+    "pitcher_name"
+  ]
+}
