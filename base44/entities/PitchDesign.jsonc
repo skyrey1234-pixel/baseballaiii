@@ -1,0 +1,63 @@
+{
+  "name": "PitchDesign",
+  "type": "object",
+  "properties": {
+    "pitcher_name": {
+      "type": "string"
+    },
+    "goal": {
+      "type": "string",
+      "description": "Coach's design brief for the new pitch"
+    },
+    "pitch_name": {
+      "type": "string"
+    },
+    "grip": {
+      "type": "string"
+    },
+    "release_cue": {
+      "type": "string"
+    },
+    "target_velocity": {
+      "type": "string"
+    },
+    "target_spin": {
+      "type": "string"
+    },
+    "spin_direction": {
+      "type": "string"
+    },
+    "movement_profile": {
+      "type": "string"
+    },
+    "tunneling": {
+      "type": "string"
+    },
+    "usage": {
+      "type": "string",
+      "description": "Counts and matchups where this pitch plays"
+    },
+    "progression": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Ordered practice progression steps"
+    },
+    "success_metrics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risk_notes": {
+      "type": "string",
+      "description": "Workload / mechanical cautions for the pitching staff"
+    }
+  },
+  "required": [
+    "pitcher_name",
+    "goal",
+    "pitch_name"
+  ]
+}
