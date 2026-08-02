@@ -8,6 +8,7 @@ import AgentOpinion from "@/components/warroom/AgentOpinion";
 import WarRoomVerdict from "@/components/warroom/WarRoomVerdict";
 import { buildFilmIntel } from "@/lib/filmIntel";
 import FilmIntelBanner from "@/components/film/FilmIntelBanner";
+import { runWarRoom, rosterContext, gameContext } from "@/lib/warRoom";
 
 const PRESETS = [
   "Should we leave our starter in for one more inning?",
@@ -15,8 +16,6 @@ const PRESETS = [
   "Should we send the runner on the next pitch?",
   "Which reliever gives us the best matchup right now?",
 ];
-
-const AGENTS = ["Pitching AI", "Hitting AI", "Defense AI", "Baserunning AI", "Fatigue AI", "Injury-Risk AI", "Scouting AI", "Game Theory AI"];
 
 export default function WarRoom() {
   const qc = useQueryClient();
@@ -37,44 +36,13 @@ export default function WarRoom() {
     setError("");
     setQuestion(q);
     try {
-    const roster = (players || []).map((p) =>
-      `${p.name} (#${p.number}, ${p.position}, ${p.key_stat}) — readiness ${p.readiness}/100, fatigue ${p.muscular_fatigue}, mechanics ${p.mechanical_stability}, command risk ${p.command_risk}${p.drift_notes?.length ? `, drift: ${p.drift_notes.join("; ")}` : ""}`
-    ).join("\n");
-    const filmIntel = buildFilmIntel(films);
-    const res = await base44.integrations.Core.InvokeLLM({
-      prompt: `You are the DiamondMind AI War Room — eight specialized baseball coaching agents who debate an in-game decision, after which a head AI issues one final recommendation.
-
-Agents (use these exact names): ${AGENTS.join(", ")}.
-
-Game context: ${game ? `vs ${game.opponent}, ${game.half} of inning ${game.inning}, score us ${game.our_score} — them ${game.their_score}, ${game.outs} outs, count ${game.balls}-${game.strikes}, runners on: ${(game.runners || []).join(", ") || "none"}. Pitcher: ${game.current_pitcher}. Opposing batter: ${game.current_batter}. ${game.notes || ""}` : "No live game — treat as a realistic simulated situation."}
-
-Roster intelligence:
-${roster}
-
-${filmIntel}
-Coach's question: "${q}"
-
-Each of the 8 agents gives one sharp, quantitative opinion (1-2 sentences, referencing concrete signals like mechanical drift, matchup splits, win probability, workload) and a stance: "for", "against", or "neutral" toward the eventual recommendation. Then produce the final recommendation, a confidence level, 2-4 decision options each with an estimated win probability (integers, realistic 40-70 range), and a clear plain-language reasoning paragraph explaining WHY.`,
-      response_json_schema: {
-        type: "object",
-        properties: {
-          agents: { type: "array", items: { type: "object", properties: { agent: { type: "string" }, opinion: { type: "string" }, stance: { type: "string", enum: ["for", "against", "neutral"] } } } },
-          recommendation: { type: "string" },
-          confidence: { type: "string", enum: ["low", "moderate", "high"] },
-          options: { type: "array", items: { type: "object", properties: { decision: { type: "string" }, win_probability: { type: "number" } } } },
-          reasoning: { type: "string" },
-        },
-      },
+    const res = await runWarRoom({
+      question: q,
+      game: gameContext(game),
+      roster: rosterContext(players),
+      filmIntel: buildFilmIntel(films),
     });
     setResult(res);
-    await base44.entities.Decision.create({
-      question: q,
-      recommendation: res.recommendation,
-      confidence: res.confidence,
-      reasoning: res.reasoning,
-      options: res.options,
-      agents: res.agents,
-    });
     qc.invalidateQueries({ queryKey: ["decisions"] });
     } catch (e) {
       setError("The connection dropped while the coaching staff was debating. Please try again.");
