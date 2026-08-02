@@ -28,6 +28,7 @@ import Passport from '@/pages/Passport';
 import PressureLab from '@/pages/PressureLab';
 import Recruiting from '@/pages/Recruiting';
 import Documentary from '@/pages/Documentary';
+import DataImport from '@/pages/DataImport';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -75,6 +76,7 @@ const AuthenticatedApp = () => {
           <Route path="/recruiting" element={<Recruiting />} />
           <Route path="/documentary" element={<Documentary />} />
           <Route path="/game-film" element={<GameFilm />} />
+          <Route path="/data-import" element={<DataImport />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />
