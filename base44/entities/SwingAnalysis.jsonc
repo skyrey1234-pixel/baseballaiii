@@ -92,6 +92,34 @@
         }
       }
     },
+    "evidence": {
+      "type": "object",
+      "description": "Where in the game film this swing happened",
+      "properties": {
+        "film_id": {
+          "type": "string"
+        },
+        "film_title": {
+          "type": "string"
+        },
+        "video_url": {
+          "type": "string"
+        },
+        "youtube_id": {
+          "type": "string"
+        },
+        "timestamp_sec": {
+          "type": "number"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "demo_video_url": {
+      "type": "string",
+      "description": "Generated demonstration of the corrected swing"
+    },
     "drill": {
       "type": "string"
     },

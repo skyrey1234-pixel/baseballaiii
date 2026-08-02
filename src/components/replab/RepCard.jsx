@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Trash2, Baby, Wrench, Target } from "lucide-react";
+import EvidenceDemo from "@/components/evidence/EvidenceDemo";
 
 const SOURCE_LABELS = {
   radar_measured: "Radar measured",
@@ -91,6 +92,13 @@ export default function RepCard({ rep, onDelete }) {
           )}
         </div>
       )}
+
+      <EvidenceDemo
+        entityName="PitchRep"
+        record={rep}
+        subject={`${rep.player_name} throwing a ${rep.pitch_type || rep.rep_type}, intent: ${rep.intent}`}
+        fix={rep.prescribed_drill || rep.likely_cause}
+      />
     </motion.div>
   );
 }

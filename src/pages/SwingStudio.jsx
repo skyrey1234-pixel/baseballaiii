@@ -7,6 +7,7 @@ import SwingScene from "@/components/swing/SwingScene";
 import SwingCallout from "@/components/swing/SwingCallout";
 import PhaseTimeline from "@/components/swing/PhaseTimeline";
 import SwingInputs from "@/components/swing/SwingInputs";
+import EvidenceDemo from "@/components/evidence/EvidenceDemo";
 
 const VIEWS = [["side", "Side"], ["catcher", "Catcher"], ["top", "Overhead"]];
 
@@ -212,6 +213,13 @@ Be honest about flaws. Never invent measurements the coach did not give as if th
                   </div>
                 </div>
               </div>
+
+              <EvidenceDemo
+                entityName="SwingAnalysis"
+                record={swing}
+                subject={`${swing.player_name} hitting${swing.situation ? ` — ${swing.situation}` : ""}`}
+                fix={swing.fix_priority || swing.drill}
+              />
             </>
           )}
 

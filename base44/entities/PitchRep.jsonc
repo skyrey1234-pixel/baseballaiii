@@ -75,6 +75,34 @@
         }
       }
     },
+    "evidence": {
+      "type": "object",
+      "description": "Where in the game film this rep happened",
+      "properties": {
+        "film_id": {
+          "type": "string"
+        },
+        "film_title": {
+          "type": "string"
+        },
+        "video_url": {
+          "type": "string"
+        },
+        "youtube_id": {
+          "type": "string"
+        },
+        "timestamp_sec": {
+          "type": "number"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "demo_video_url": {
+      "type": "string",
+      "description": "Generated demonstration of the corrected rep"
+    },
     "plain_explanation": {
       "type": "string",
       "description": "AI explanation in plain baseball language"

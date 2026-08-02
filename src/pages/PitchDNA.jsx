@@ -7,6 +7,7 @@ import { Loader2, Dna } from "lucide-react";
 import DNACard from "@/components/dna/DNACard";
 import ArsenalMap from "@/components/dna/ArsenalMap";
 import { buildFilmIntel } from "@/lib/filmIntel";
+import EvidenceDemo from "@/components/evidence/EvidenceDemo";
 
 export default function PitchDNA() {
   const qc = useQueryClient();
@@ -125,6 +126,14 @@ Ground everything in the evidence above. Do not invent measurements that were ne
         <div className="space-y-6">
           <p className="text-xs text-slate-600">Built from {profile.rep_count} logged rep{profile.rep_count === 1 ? "" : "s"}.</p>
           <ArsenalMap dna={profile} />
+          <EvidenceDemo
+            entityName="PitchDNA"
+            record={profile}
+            subject={`${profile.pitcher_name} pitching from the mound`}
+            fix={profile.pitches?.[0]
+              ? `A ${profile.pitches[0].pitch_type} thrown with its intended shape — ${profile.pitches[0].identity}`
+              : profile.summary}
+          />
           <div className="grid md:grid-cols-2 gap-4">
             {(profile.pitches || []).map((pitch, i) => <DNACard key={pitch.pitch_type + i} pitch={pitch} index={i} />)}
           </div>

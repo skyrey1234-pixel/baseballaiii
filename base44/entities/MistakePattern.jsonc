@@ -59,6 +59,34 @@
       "type": "string",
       "description": "How to confirm the chain is actually broken"
     },
+    "evidence": {
+      "type": "object",
+      "description": "Where in the game film this pattern shows up",
+      "properties": {
+        "film_id": {
+          "type": "string"
+        },
+        "film_title": {
+          "type": "string"
+        },
+        "video_url": {
+          "type": "string"
+        },
+        "youtube_id": {
+          "type": "string"
+        },
+        "timestamp_sec": {
+          "type": "number"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "demo_video_url": {
+      "type": "string",
+      "description": "Generated demonstration of the corrected action"
+    },
     "confidence": {
       "type": "string",
       "enum": [

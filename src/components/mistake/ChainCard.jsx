@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Target, ShieldCheck, RefreshCw, CheckCircle2 } from "lucide-react";
+import EvidenceDemo from "@/components/evidence/EvidenceDemo";
 
 export default function ChainCard({ pattern }) {
   return (
@@ -51,6 +52,13 @@ export default function ChainCard({ pattern }) {
           </div>
         ))}
       </div>
+
+      <EvidenceDemo
+        entityName="MistakePattern"
+        record={pattern}
+        subject={`${pattern.player_name}, a ${pattern.player_role}, in this situation: ${pattern.trigger}`}
+        fix={pattern.intervention || pattern.root_cause}
+      />
     </div>
   );
 }
