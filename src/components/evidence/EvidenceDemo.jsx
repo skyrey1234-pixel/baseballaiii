@@ -51,12 +51,31 @@ export default function EvidenceDemo({ entityName, record, subject, fix }) {
     setGenerating(true);
     setError("");
     try {
+      // Step 1: have the AI write a precise cinematography prompt grounded in this exact correction.
+      const { video_prompt } = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are directing a short slow-motion baseball instructional video that models the CORRECT version of a specific rep.
+
+The correction to model: ${fix}
+Athlete/context: ${subject}
+${note ? `Coach's note on the original mistake: ${note}` : ""}
+
+Write a single detailed video-generation prompt (one paragraph, max 120 words) that describes EXACTLY this movement done correctly. Requirements:
+- Name the specific body positions, sequencing, and timing that make this rep correct (be concrete: hands, hips, front foot, release/contact point — whatever applies to this correction).
+- One right-handed athlete in a plain grey baseball uniform on a sunlit field.
+- Locked-off broadcast side angle, slow motion, shallow depth of field.
+- No text, graphics, or overlays. Realistic ball flight consistent with the corrected mechanics.
+Do not include anything unrelated to this specific correction.`,
+        response_json_schema: {
+          type: "object",
+          properties: { video_prompt: { type: "string" } },
+          required: ["video_prompt"],
+        },
+      });
+
       const { url } = await base44.integrations.Core.GenerateVideo({
-        prompt: `Photorealistic slow-motion baseball instructional footage on a sunlit field, locked-off broadcast side angle, shallow depth of field, no text or graphics overlaid.
-
-Show the CORRECT execution: ${fix}
-
-Context: ${subject}. The athlete performs the movement cleanly and repeatably, exactly as a coach would want it modeled. Natural body mechanics, correct sequencing, realistic ball flight.`,
+        prompt: video_prompt,
+        duration: 8,
+        generate_audio: false,
       });
       await base44.entities[entityName].update(record.id, { demo_video_url: url });
       refresh();

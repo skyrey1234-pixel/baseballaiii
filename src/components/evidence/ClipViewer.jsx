@@ -1,5 +1,6 @@
-import React, { useRef } from "react";
-import { Film } from "lucide-react";
+import React, { useRef, useState, useEffect } from "react";
+import { Film, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const toSeconds = (s) => {
   if (!s) return 0;
@@ -14,6 +15,15 @@ export const toClock = (sec) => {
 
 export default function ClipViewer({ evidence }) {
   const ref = useRef(null);
+  const start = Math.round(evidence?.timestamp_sec || 0);
+  // Bumping the nonce remounts the player so it re-seeks to the exact moment.
+  const [nonce, setNonce] = useState(0);
+
+  // When the saved timestamp changes, seek the uploaded video immediately.
+  useEffect(() => {
+    if (ref.current) ref.current.currentTime = start;
+  }, [start]);
+
   if (!evidence?.video_url && !evidence?.youtube_id) {
     return (
       <div className="aspect-video rounded-xl border border-dashed border-white/10 flex flex-col items-center justify-center gap-2 text-slate-600">
@@ -23,15 +33,23 @@ export default function ClipViewer({ evidence }) {
     );
   }
 
-  const start = evidence.timestamp_sec || 0;
+  const jump = () => {
+    if (evidence.youtube_id) {
+      setNonce((n) => n + 1);
+    } else if (ref.current) {
+      ref.current.currentTime = start;
+      ref.current.play();
+    }
+  };
 
   return (
     <div className="space-y-2">
       <div className="aspect-video rounded-xl overflow-hidden border border-white/10 bg-black">
         {evidence.youtube_id ? (
           <iframe
+            key={`${start}-${nonce}`}
             className="w-full h-full"
-            src={`https://www.youtube.com/embed/${evidence.youtube_id}?start=${start}`}
+            src={`https://www.youtube.com/embed/${evidence.youtube_id}?start=${start}${nonce > 0 ? "&autoplay=1" : ""}`}
             title={evidence.film_title || "Game clip"}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
             allowFullScreen
@@ -39,17 +57,26 @@ export default function ClipViewer({ evidence }) {
         ) : (
           <video
             ref={ref}
-            src={evidence.video_url}
+            key={start}
+            src={`${evidence.video_url}#t=${start}`}
             controls
+            preload="metadata"
             className="w-full h-full"
             onLoadedMetadata={() => { if (ref.current) ref.current.currentTime = start; }}
           />
         )}
       </div>
-      <p className="text-[11px] text-slate-500">
-        {evidence.film_title} · starts at {toClock(start)}
-        {evidence.note ? ` — ${evidence.note}` : ""}
-      </p>
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[11px] text-slate-500 min-w-0 truncate">
+          {evidence.film_title}
+          {evidence.note ? ` — ${evidence.note}` : ""}
+        </p>
+        <Button size="sm" variant="outline" onClick={jump}
+          className="h-7 px-2.5 shrink-0 text-[11px] border-cyan-400/30 bg-cyan-400/[0.06] text-cyan-200 hover:bg-cyan-400/15 hover:text-cyan-100">
+          <MapPin className="w-3 h-3 mr-1.5" />
+          Jump to {toClock(start)}
+        </Button>
+      </div>
     </div>
   );
 }
