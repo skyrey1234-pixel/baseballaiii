@@ -4,7 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, CheckCircle2 } from "lucide-react";
+import { MapPin, CheckCircle2, Loader2, ScanSearch } from "lucide-react";
 import ClipViewer, { toSeconds, toClock } from "@/components/evidence/ClipViewer";
 import DemoVideo from "@/components/evidence/DemoVideo";
 
@@ -19,10 +19,57 @@ export default function EvidenceDemo({ entityName, record, subject, fix }) {
   const [stamp, setStamp] = useState(ev.timestamp_sec ? toClock(ev.timestamp_sec) : "");
   const [note, setNote] = useState(ev.note || "");
   const [saving, setSaving] = useState(false);
+  const [finding, setFinding] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState("");
 
   const refresh = () => qc.invalidateQueries();
+
+  // The AI watches the actual film and pinpoints the exact second the moment happens.
+  const findMoment = async () => {
+    const list = films || [];
+    const film = list.find((f) => f.id === filmId) || list.find((f) => f.id === ev.film_id) || (list.length === 1 ? list[0] : null);
+    if (!film) { setError("Pick a game film first so the AI knows which video to scan."); return; }
+    if (film.youtube_id) { setError("The AI can only scan uploaded films. For YouTube links, enter the timestamp manually."); return; }
+    setFinding(true);
+    setError("");
+    try {
+      const res = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are watching baseball game film. Find the single clearest moment in this video that matches the following:
+
+Looking for: ${subject}${note ? ` — ${note}` : ""}${fix ? `\nRelated coaching context: ${fix}` : ""}
+
+Watch the footage and return the exact timestamp (in seconds from the start of the video) where this moment happens on screen — the actual pitch/swing/play itself, not a replay graphic. Also return a one-line description of exactly what happens at that moment. If you cannot find that exact situation, return the closest matching moment and describe it honestly.`,
+        file_urls: [film.video_url],
+        model: "gemini_3_flash",
+        response_json_schema: {
+          type: "object",
+          properties: {
+            timestamp_sec: { type: "number" },
+            description: { type: "string" },
+          },
+          required: ["timestamp_sec", "description"],
+        },
+      });
+      await base44.entities[entityName].update(record.id, {
+        evidence: {
+          film_id: film.id,
+          film_title: film.title,
+          video_url: film.video_url,
+          youtube_id: "",
+          timestamp_sec: Math.round(res.timestamp_sec),
+          note: res.description,
+        },
+      });
+      setFilmId(film.id);
+      setStamp(toClock(res.timestamp_sec));
+      setNote(res.description);
+      refresh();
+    } catch (e) {
+      setError("The AI could not scan that film. Try a shorter video or enter the timestamp manually.");
+    }
+    setFinding(false);
+  };
 
   const saveClip = async () => {
     const film = (films || []).find((f) => f.id === filmId);
@@ -107,6 +154,10 @@ Do not include anything unrelated to this specific correction.`,
             </Button>
           </div>
           <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="What to look for at that timestamp" className={cls} />
+          <Button size="sm" onClick={findMoment} disabled={finding || saving} variant="outline"
+            className="w-full h-9 border-cyan-400/30 bg-cyan-400/[0.06] text-cyan-200 hover:bg-cyan-400/15 hover:text-cyan-100">
+            {finding ? <><Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" /> Scanning the film for the moment…</> : <><ScanSearch className="w-3.5 h-3.5 mr-2" /> Find the exact moment with AI</>}
+          </Button>
         </div>
 
         <div className="space-y-3">
