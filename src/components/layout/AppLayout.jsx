@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import { LayoutGrid, Swords, Crosshair, Users, Diamond, Clapperboard, FlaskConical, Activity, Dna, Boxes, GitBranch, ShieldCheck, Flame, BadgeCheck, Film, Database } from "lucide-react";
+import { LayoutGrid, Swords, Crosshair, Users, Diamond, Clapperboard, FlaskConical, Activity, Dna, Boxes, GitBranch, ShieldCheck, Flame, BadgeCheck, Film, Database, UserPlus } from "lucide-react";
 
 // Each destination carries its own accent so the sidebar reads as a colorful map, not a list.
 const nav = [
@@ -19,6 +19,7 @@ const nav = [
   { to: "/recruiting", label: "Recruiting Truth", icon: BadgeCheck, color: "text-emerald-300", active: "bg-emerald-400/15 text-emerald-200 shadow-[inset_0_0_0_1px_rgba(52,211,153,0.35)]" },
   { to: "/documentary", label: "Season Film", icon: Film, color: "text-pink-300", active: "bg-pink-400/15 text-pink-200 shadow-[inset_0_0_0_1px_rgba(249,168,212,0.35)]" },
   { to: "/data-import", label: "Data Import", icon: Database, color: "text-cyan-300", active: "bg-cyan-400/15 text-cyan-200 shadow-[inset_0_0_0_1px_rgba(103,232,249,0.35)]" },
+  { to: "/team", label: "Staff Access", icon: UserPlus, color: "text-violet-300", active: "bg-violet-400/15 text-violet-200 shadow-[inset_0_0_0_1px_rgba(196,181,253,0.35)]" },
 ];
 
 export default function AppLayout() {
